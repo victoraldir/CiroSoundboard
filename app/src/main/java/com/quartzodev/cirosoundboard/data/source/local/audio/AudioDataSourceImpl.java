@@ -1,5 +1,6 @@
 package com.quartzodev.cirosoundboard.data.source.local.audio;
 
+import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.quartzodev.cirosoundboard.data.Audio;
@@ -104,6 +105,11 @@ public class AudioDataSourceImpl implements AudioDataSource {
         };
 
         mAppExecutors.diskIO().execute(getAudioTask);
+    }
+
+    @Override
+    public LiveData<List<Audio>> loadFavorite() {
+        return mAudioDao.listFavorites();
     }
 
 }

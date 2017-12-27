@@ -1,5 +1,6 @@
 package com.quartzodev.cirosoundboard.data.source;
 
+import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 
@@ -74,6 +75,11 @@ public class AudioRepository implements AudioDataSource {
     @Override
     public void updateFavoriteFlag(@NonNull Long sectionId, @NonNull boolean flagFavorite) {
         mAudioDataSource.updateFavoriteFlag(sectionId, flagFavorite);
+    }
+
+    @Override
+    public LiveData<List<Audio>> loadFavorite() {
+        return mAudioDataSource.loadFavorite();
     }
 
     private void refreshCacheAudio(Long sectionId ,List<Audio> audioList) {

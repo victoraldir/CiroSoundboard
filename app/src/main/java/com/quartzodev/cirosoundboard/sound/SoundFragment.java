@@ -1,5 +1,6 @@
 package com.quartzodev.cirosoundboard.sound;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -59,6 +60,15 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
         if(getArguments().containsKey(ARG_SECTION_ID)){
             mSectionId = getArguments().getLong(ARG_SECTION_ID);
         }
+
+        if(mSectionId == 0){
+            mSoundViewModel.getFavoriteList().observe(this, new Observer<List<Audio>>() {
+                @Override
+                public void onChanged(@Nullable List<Audio> audioList) {
+                    mAdapter.swap(audioList);
+                }
+            });
+        }
     }
 
     @Override
@@ -82,11 +92,16 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listAudios();
+        if(mSectionId != 0)
+            listAudios();
     }
 
     public void listAudios() {
-        mSoundViewModel.loadAudios(mSectionId,this);
+        if(mSectionId == 0){ //Favorites
+
+        }else {
+            mSoundViewModel.loadAudios(mSectionId, this);
+        }
     }
 
     @Override

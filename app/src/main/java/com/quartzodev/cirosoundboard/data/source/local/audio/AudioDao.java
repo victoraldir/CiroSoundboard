@@ -1,5 +1,6 @@
 package com.quartzodev.cirosoundboard.data.source.local.audio;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 
@@ -26,4 +27,7 @@ public interface AudioDao {
 
     @Query("UPDATE Audio SET flag_favorite = :flagFavorite WHERE id= :audioId")
     void updateFavoriteFlag(Long audioId, boolean flagFavorite);
+
+    @Query("SELECT * FROM Audio WHERE flag_favorite = 1")
+    LiveData<List<Audio>> listFavorites();
 }

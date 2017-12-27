@@ -25,6 +25,12 @@ public class SoundSectionsPagerAdapter extends FragmentStatePagerAdapter {
                                      List<Section> sectionList) {
         super(fm);
         mSectionList = sectionList;
+        addFavorite();
+    }
+
+    private void addFavorite(){
+        Section favSection = new Section(new Long(0),"Favorite",0);
+        mSectionList.add(0,favSection);
     }
 
     public void swap(List<Section> sections){
@@ -33,6 +39,7 @@ public class SoundSectionsPagerAdapter extends FragmentStatePagerAdapter {
 
     private void setList(List<Section> sections) {
         mSectionList = sections;
+        addFavorite();
         notifyDataSetChanged();
     }
 
