@@ -84,10 +84,10 @@ public class AppMediaPlayer implements LifecycleObserver, MediaPlayer.OnPrepared
         if(mFancyButton != null){
 
             if(flag){
-                mFancyButton.setText("PAUSE");
+//                mFancyButton.setText("PAUSE");
                 mFancyButton.setIconResource("\uf04c");
             }else{
-                mFancyButton.setText("PLAY");
+//                mFancyButton.setText("PLAY");
                 mFancyButton.setIconResource("\uf04b");
             }
 

@@ -71,6 +71,11 @@ public class AudioRepository implements AudioDataSource {
         mAudioDataSource.getRandomAudio(callback);
     }
 
+    @Override
+    public void updateFavoriteFlag(@NonNull Long sectionId, @NonNull boolean flagFavorite) {
+        mAudioDataSource.updateFavoriteFlag(sectionId, flagFavorite);
+    }
+
     private void refreshCacheAudio(Long sectionId ,List<Audio> audioList) {
         if (mCachedAudio == null) {
             mCachedAudio = new LinkedHashMap<>();

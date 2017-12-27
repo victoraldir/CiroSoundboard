@@ -93,4 +93,17 @@ public class AudioDataSourceImpl implements AudioDataSource {
         mAppExecutors.diskIO().execute(getAudioTask);
     }
 
+    @Override
+    public void updateFavoriteFlag(@NonNull final Long sectionId, @NonNull final boolean flagFavorite) {
+        Runnable getAudioTask = new Runnable() {
+
+            @Override
+            public void run() {
+                mAudioDao.updateFavoriteFlag(sectionId,flagFavorite);
+            }
+        };
+
+        mAppExecutors.diskIO().execute(getAudioTask);
+    }
+
 }

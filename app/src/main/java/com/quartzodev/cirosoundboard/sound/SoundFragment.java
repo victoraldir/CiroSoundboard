@@ -71,7 +71,7 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
 
         RecyclerView.LayoutManager lm = new GridLayoutManager(getContext(), 3);
         mGridRecyclerView.setLayoutManager(lm);
-        mAdapter = new SoundAdapter(new ArrayList<Audio>(),(SoundActivity) getActivity());
+        mAdapter = new SoundAdapter(new ArrayList<Audio>(), mSoundFragmentListener);
 
         mGridRecyclerView.setAdapter(mAdapter);
 
@@ -115,5 +115,6 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
     public interface SoundFragmentListener{
         void onClick(Audio audio, FancyButton button, View container);
         void onLongClick(Audio audio, FancyButton button, View container);
+        void onFavoriteClick(Audio audio, boolean flag);
     }
 }

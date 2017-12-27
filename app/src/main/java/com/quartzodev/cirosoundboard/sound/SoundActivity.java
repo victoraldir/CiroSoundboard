@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +24,15 @@ import com.quartzodev.cirosoundboard.data.Audio;
 import com.quartzodev.cirosoundboard.data.Section;
 import com.quartzodev.cirosoundboard.data.source.GenericDataSource;
 import com.quartzodev.cirosoundboard.utils.AppMediaPlayer;
+import com.quartzodev.cirosoundboard.utils.FileUtils;
 import com.quartzodev.cirosoundboard.utils.UriUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +48,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     private SoundViewModel mSoundViewModel;
     private CoordinatorLayout mCoordinatorLayout;
     private Toolbar mToolbar;
+    private ActionMode mMode;
 
     private boolean mMultiSelect = false;
     private Map<Audio, View> mSelectedItems = new HashMap<Audio, View>();
@@ -91,6 +98,11 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -118,8 +130,16 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
     @Override
     public void onLongClick(Audio audio, FancyButton fancyButton, View container) {
-        mToolbar.startActionMode(this);
+        mMode = mToolbar.startActionMode(this);
         selectItem(audio,container);
+    }
+
+    @Override
+    public void onFavoriteClick(Audio audio, boolean flag) {
+        mSoundViewModel.updateFavoriteFlag(audio.getId(),flag);
+
+        Snackbar.make(mCoordinatorLayout, "Audio " + audio.getLabel() + " flagged as " + (flag ? "favorite" : "not favorite"), Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     @Override
@@ -148,7 +168,6 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     @Override
     public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
         mMultiSelect = true;
-        menu.add("Favorito");
         menu.add("Compartilhar");
         return true;
     }
@@ -162,10 +181,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
 
         if(menuItem.getTitle().equals("Compartilhar")){
-            Intent intent = new Intent(Intent.ACTION_SEND).setType("audio/mpeg3");
-            ArrayList<Audio> audioList = new ArrayList<>(mSelectedItems.keySet());
-            intent.putExtra(Intent.EXTRA_STREAM, UriUtils.getResourceUri(audioList.get(0).getAudioPath(),this));
-            startActivity(Intent.createChooser(intent, "Compartilhar com"));
+            shareAudio(new ArrayList<>(mSelectedItems.keySet()));
         }
 
         return false;
@@ -188,10 +204,41 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
             if (mSelectedItems.containsKey(audio)) {
                 mSelectedItems.remove(audio);
                 container.setBackgroundColor(Color.WHITE);
+
+                if(mSelectedItems.isEmpty()){
+                    mMode.finish();
+                }
+
             } else {
                 mSelectedItems.put(audio, container);
                 container.setBackgroundColor(Color.LTGRAY);
             }
+        }
+    }
+
+    private void shareAudio(List<Audio> audioList){
+
+        try {
+
+            ArrayList<Uri> uriList = new ArrayList<>();
+
+            for(Audio audioToShare: audioList){
+                InputStream inputStream = getContentResolver().openInputStream(UriUtils.getResourceUri(audioToShare.getAudioPath(),this));
+
+                File fileToShare = FileUtils.getExistingFile(this,audioToShare.getLabel());
+
+                if(fileToShare == null)
+                    fileToShare = FileUtils.writeStreamToFile(this,audioToShare.getLabel(),inputStream);
+
+                uriList.add(Uri.fromFile(fileToShare));
+            }
+
+            Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE).setType("audio/x-mpeg3");
+            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
+            startActivity(Intent.createChooser(intent, "Share to"));
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

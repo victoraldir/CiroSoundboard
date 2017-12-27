@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.quartzodev.cirosoundboard.R;
@@ -47,14 +47,39 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         final Audio audio = mAudioList.get(position);
 
-        holder.labelAudio.setText(audio.getLabel());
+        holder.mLabelAudio.setText(audio.getLabel());
 
-        final FrameLayout container = holder.container;
-        final FancyButton button = holder.btnAudio;
+        final LinearLayout container = holder.mContainer;
+        final FancyButton button = holder.mBtnAudio;
+
+        if(audio.isFavorite()){
+            holder.mImageView.setImageResource(R.drawable.ic_favorite);
+            holder.mImageView.setTag(true);
+        }else{
+            holder.mImageView.setImageResource(R.drawable.ic_favorite_border);
+            holder.mImageView.setTag(false);
+        }
+
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if((boolean) view.getTag()){
+                    holder.mImageView.setImageResource(R.drawable.ic_favorite_border);
+                    holder.mImageView.setTag(false);
+                    mListener.onFavoriteClick(audio,false);
+                }else{
+                    holder.mImageView.setImageResource(R.drawable.ic_favorite);
+                    holder.mImageView.setTag(true);
+                    mListener.onFavoriteClick(audio,true);
+                }
+
+            }
+        });
 
         container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +103,7 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
             }
         });
 
-        holder.btnAudio.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.mBtnAudio.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 mListener.onLongClick(audio, button, container);
@@ -95,15 +120,17 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView labelAudio;
-        FancyButton btnAudio;
-        FrameLayout container;
+        TextView mLabelAudio;
+        FancyButton mBtnAudio;
+        LinearLayout mContainer;
+        ImageView mImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            container = itemView.findViewById(R.id.container_btn);
-            btnAudio = itemView.findViewById(R.id.btn_audio);
-            labelAudio = itemView.findViewById(R.id.label_audio);
+            mContainer = itemView.findViewById(R.id.container_btn);
+            mBtnAudio = itemView.findViewById(R.id.btn_audio);
+            mLabelAudio = itemView.findViewById(R.id.label_audio);
+            mImageView = itemView.findViewById(R.id.fav_icon);
         }
     }
 }

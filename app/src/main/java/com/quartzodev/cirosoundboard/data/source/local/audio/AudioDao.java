@@ -23,4 +23,7 @@ public interface AudioDao {
 
     @Query("SELECT * FROM Audio ORDER BY RANDOM() LIMIT 1")
     Audio getRandomAudio();
+
+    @Query("UPDATE Audio SET flag_favorite = :flagFavorite WHERE id= :audioId")
+    void updateFavoriteFlag(Long audioId, boolean flagFavorite);
 }
