@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
@@ -23,16 +27,12 @@ import com.quartzodev.cirosoundboard.ViewModelFactory;
 import com.quartzodev.cirosoundboard.data.Audio;
 import com.quartzodev.cirosoundboard.data.Section;
 import com.quartzodev.cirosoundboard.data.source.GenericDataSource;
+import com.quartzodev.cirosoundboard.utils.AppExecutors;
 import com.quartzodev.cirosoundboard.utils.AppMediaPlayer;
 import com.quartzodev.cirosoundboard.utils.FileUtils;
-import com.quartzodev.cirosoundboard.utils.UriUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +40,8 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 public class SoundActivity extends AppCompatActivity implements SoundFragment.SoundFragmentListener,
         GenericDataSource.LoadListCallback<Section>, GenericDataSource.GetObjectCallback<Audio>,
-        View.OnClickListener, android.view.ActionMode.Callback {
+        View.OnClickListener, android.view.ActionMode.Callback,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private AppMediaPlayer mAppMediaPlayer;
     private SoundSectionsPagerAdapter mSectionsPagerAdapter;
@@ -49,6 +50,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     private CoordinatorLayout mCoordinatorLayout;
     private Toolbar mToolbar;
     private ActionMode mMode;
+    private AppExecutors mAppExecutors;
 
     private boolean mMultiSelect = false;
     private Map<Audio, View> mSelectedItems = new HashMap<Audio, View>();
@@ -59,29 +61,50 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sound_act);
 
+        mCoordinatorLayout = findViewById(R.id.main_content);
+        // Set up the ViewPager with the sections adapter.
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(mToolbar);
+
+        mAppMediaPlayer = AppMediaPlayer.newInstance(this, this);
+        mSoundViewModel = obtainViewModel(this);
+        mSoundViewModel.loadSections(this);
+
+        mAppExecutors = new AppExecutors();
+
+        setupFloatButton();
+        setupViewPager();
+        setupDrawer();
+    }
+
+    public void setupFloatButton() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    public void setupViewPager() {
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SoundSectionsPagerAdapter(getSupportFragmentManager(), new ArrayList<Section>());
-
-        mCoordinatorLayout = findViewById(R.id.main_content);
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-
         tabLayout.setupWithViewPager(mViewPager);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+    public void setupDrawer() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        mAppMediaPlayer = AppMediaPlayer.newInstance(this,this);
-
-        mSoundViewModel = obtainViewModel(this);
-        mSoundViewModel.loadSections(this);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     public static SoundViewModel obtainViewModel(FragmentActivity activity) {
@@ -123,20 +146,20 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         if (!mMultiSelect) {
             mAppMediaPlayer.setButton(fancyButton);
             mAppMediaPlayer.playAudio(audio.getAudioPath());
-        }else{
-            selectItem(audio,container);
+        } else {
+            selectItem(audio, container);
         }
     }
 
     @Override
     public void onLongClick(Audio audio, FancyButton fancyButton, View container) {
         mMode = mToolbar.startActionMode(this);
-        selectItem(audio,container);
+        selectItem(audio, container);
     }
 
     @Override
     public void onFavoriteClick(Audio audio, boolean flag) {
-        mSoundViewModel.updateFavoriteFlag(audio.getId(),flag);
+        mSoundViewModel.updateFavoriteFlag(audio.getId(), flag);
 
         Snackbar.make(mCoordinatorLayout, "Audio " + audio.getLabel() + " flagged as " + (flag ? "favorite" : "not favorite"), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
@@ -180,8 +203,16 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     @Override
     public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
 
-        if(menuItem.getTitle().equals("Compartilhar")){
-            shareAudio(new ArrayList<>(mSelectedItems.keySet()));
+        if (menuItem.getTitle().equals("Compartilhar")) {
+
+            Runnable taskWriteSong = new Runnable() {
+                @Override
+                public void run() {
+                    shareAudio(new ArrayList<>(mSelectedItems.keySet()));
+                }
+            };
+
+            mAppExecutors.mainThread().execute(taskWriteSong);
         }
 
         return false;
@@ -191,7 +222,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     public void onDestroyActionMode(android.view.ActionMode actionMode) {
         mMultiSelect = false;
 
-        for(View view: mSelectedItems.values()){
+        for (View view : mSelectedItems.values()) {
             view.setBackgroundColor(Color.WHITE);
         }
 
@@ -205,7 +236,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
                 mSelectedItems.remove(audio);
                 container.setBackgroundColor(Color.WHITE);
 
-                if(mSelectedItems.isEmpty()){
+                if (mSelectedItems.isEmpty()) {
                     mMode.finish();
                 }
 
@@ -216,29 +247,29 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         }
     }
 
-    private void shareAudio(List<Audio> audioList){
+    private synchronized void shareAudio(List<Audio> audioList) {
 
-        try {
+        ArrayList<Uri> uriList = new ArrayList<>();
 
-            ArrayList<Uri> uriList = new ArrayList<>();
+        for (Audio audioToShare : audioList) {
 
-            for(Audio audioToShare: audioList){
-                InputStream inputStream = getContentResolver().openInputStream(UriUtils.getResourceUri(audioToShare.getAudioPath(),this));
+            Uri fileToShareUri = FileUtils.getExistingFile(this, audioToShare.getLabel());
 
-                File fileToShare = FileUtils.getExistingFile(this,audioToShare.getLabel());
-
-                if(fileToShare == null)
-                    fileToShare = FileUtils.writeStreamToFile(this,audioToShare.getLabel(),inputStream);
-
-                uriList.add(Uri.fromFile(fileToShare));
+            if (fileToShareUri == null) {
+                fileToShareUri = FileUtils.writeStreamToFile(this, audioToShare.getLabel(), audioToShare.getAudioPath());
             }
 
-            Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE).setType("audio/x-mpeg3");
-            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
-            startActivity(Intent.createChooser(intent, "Share to"));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            uriList.add(fileToShareUri);
         }
+
+        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE).setType("audio/x-mpeg3");
+        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
+        startActivity(Intent.createChooser(intent, "Share to"));
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }

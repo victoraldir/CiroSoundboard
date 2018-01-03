@@ -40,31 +40,33 @@ public class AudioDataSourceImpl implements AudioDataSource {
     }
 
     @Override
-    public void getAudiosBySectionId(@NonNull final Long sectionId, @NonNull final LoadListCallback<Audio> callback) {
+    public LiveData<List<Audio>> getAudiosBySectionId(@NonNull final Long sectionId) {
 
-        Runnable getAudiosTask = new Runnable() {
+        return mAudioDao.getAudiosBySectionId(sectionId);
 
-            @Override
-            public void run() {
-                final List<Audio> audioList = mAudioDao.getAudiosBySectionId(sectionId);
-
-                mAppExecutors.mainThread().execute(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        if(audioList.isEmpty()){
-                            callback.onDataNotAvailable();
-                        }else {
-                            callback.onListLoaded(audioList);
-                        };
-                    }
-                });
-            }
-
-
-        };
-
-        mAppExecutors.diskIO().execute(getAudiosTask);
+//        Runnable getAudiosTask = new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                final List<Audio> audioList = mAudioDao.getAudiosBySectionId(sectionId);
+//
+//                mAppExecutors.mainThread().execute(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        if(audioList.isEmpty()){
+//                            callback.onDataNotAvailable();
+//                        }else {
+//                            callback.onListLoaded(audioList);
+//                        };
+//                    }
+//                });
+//            }
+//
+//
+//        };
+//
+//        mAppExecutors.diskIO().execute(getAudiosTask);
     }
 
     @Override

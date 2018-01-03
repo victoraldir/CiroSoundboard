@@ -1,6 +1,9 @@
 package com.quartzodev.cirosoundboard.utils;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,33 +21,60 @@ public class FileUtils {
     private static final String MP3_EXTENSION = ".mp3";
     private static final int BUFFER_SIZE = 2; // 2 MEGA
 
-    public static File getExistingFile(Context context, String fileName){
+    public static Uri getExistingFile(Context context, String fileName){
 
-        File file = new File(context.getExternalCacheDir(), fileName.concat(MP3_EXTENSION));
+        File songPath = new File(context.getExternalCacheDir(), "songs");
+        File file = new File(songPath, fileName.concat(MP3_EXTENSION));
 
         if(file.exists()){
-            return file;
+
+            Uri contentUri;
+
+            if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
+                contentUri = FileProvider.getUriForFile(context, context.getPackageName()+".fileprovider", file);
+            } else {
+                contentUri = Uri.fromFile(file);
+            }
+
+            return contentUri;
         }
 
         return null;
     }
 
-    public static File writeStreamToFile(Context context, String fileName, InputStream input){
+    public static Uri writeStreamToFile(Context context, String fileName, String audioPath){
+
+        InputStream inputStream = null;
 
         try {
-            File file = new File(context.getExternalCacheDir(), fileName.concat(MP3_EXTENSION));
+            File songsPath = new File(context.getExternalCacheDir(), "songs");
+
+            if(!songsPath.exists()) songsPath.mkdir();
+
+            File file = new File(songsPath, fileName.concat(MP3_EXTENSION));
+
+            inputStream = context.getContentResolver().openInputStream(UriUtils.getResourceUri(audioPath,context));
+
             OutputStream output = new FileOutputStream(file);
             try {
                 byte[] buffer = new byte[BUFFER_SIZE * 1024]; // or other buffer size
                 int read;
 
-                while ((read = input.read(buffer)) != -1) {
+                while ((read = inputStream.read(buffer)) != -1) {
                     output.write(buffer, 0, read);
                 }
 
                 output.flush();
 
-                return file;
+                Uri contentUri = null;
+
+                if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
+                    contentUri = FileProvider.getUriForFile(context, context.getPackageName()+".fileprovider", file);
+                } else {
+                    contentUri = Uri.fromFile(file);
+                }
+
+                return contentUri;
             } finally {
                 output.close();
 
@@ -55,7 +85,8 @@ public class FileUtils {
             e.printStackTrace();
         } finally {
             try {
-                input.close();
+
+                inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

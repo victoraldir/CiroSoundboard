@@ -33,8 +33,8 @@ public class SoundViewModel extends ViewModel {
     }
 
 
-    public void loadAudios(Long sectionId, GenericDataSource.LoadListCallback<Audio> callback){
-        mAudioRepository.getAudiosBySectionId(sectionId, callback);
+    public LiveData<List<Audio>> loadAudios(Long sectionId){
+        return mAudioRepository.getAudiosBySectionId(sectionId);
     }
 
     public void updateFavoriteFlag(Long sectionId, boolean flag){

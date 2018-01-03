@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface AudioDataSource extends GenericDataSource {
 
-    void getAudiosBySectionId(@NonNull Long sectionId, @NonNull GenericDataSource.LoadListCallback<Audio> callback);
+    LiveData<List<Audio>> getAudiosBySectionId(@NonNull Long sectionId);
 
     void getRandomAudio(@NonNull GenericDataSource.GetObjectCallback<Audio> callback);
 

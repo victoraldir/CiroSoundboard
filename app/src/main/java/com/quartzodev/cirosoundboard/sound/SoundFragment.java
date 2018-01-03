@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.quartzodev.cirosoundboard.R;
 import com.quartzodev.cirosoundboard.data.Audio;
@@ -24,13 +26,15 @@ import mehdi.sakout.fancybuttons.FancyButton;
  * Created by victoraldir on 17/12/2017.
  */
 
-public class SoundFragment extends Fragment implements GenericDataSource.LoadListCallback {
+public class SoundFragment extends Fragment implements Observer<List<Audio>> {
 
     private SoundViewModel mSoundViewModel;
     private SoundFragmentListener mSoundFragmentListener;
     private RecyclerView mGridRecyclerView;
     private SoundAdapter mAdapter;
     private Long mSectionId;
+    private ProgressBar mProgressBar;
+    private TextView mMessage;
 
     private static final String ARG_SECTION_ID = "section_id";
 
@@ -62,12 +66,7 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
         }
 
         if(mSectionId == 0){
-            mSoundViewModel.getFavoriteList().observe(this, new Observer<List<Audio>>() {
-                @Override
-                public void onChanged(@Nullable List<Audio> audioList) {
-                    mAdapter.swap(audioList);
-                }
-            });
+            mSoundViewModel.getFavoriteList().observe(this, this);
         }
     }
 
@@ -75,7 +74,17 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.sound_frag, container, false);
+        View rootView;
+
+        if(mSectionId == 0){
+            rootView = inflater.inflate(R.layout.sound_fav_frag, container, false);
+        }else{
+            rootView = inflater.inflate(R.layout.sound_frag, container, false);
+        }
+
+        mProgressBar = rootView.findViewById(R.id.load_progress);
+
+        mMessage = rootView.findViewById(R.id.message);
 
         mGridRecyclerView = rootView.findViewById(R.id.grid_audio);
 
@@ -84,6 +93,8 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
         mAdapter = new SoundAdapter(new ArrayList<Audio>(), mSoundFragmentListener);
 
         mGridRecyclerView.setAdapter(mAdapter);
+
+        loading();
 
         return rootView;
     }
@@ -97,10 +108,8 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
     }
 
     public void listAudios() {
-        if(mSectionId == 0){ //Favorites
-
-        }else {
-            mSoundViewModel.loadAudios(mSectionId, this);
+        if(mSectionId != 0){
+            mSoundViewModel.loadAudios(mSectionId).observe(this, this);
         }
     }
 
@@ -110,7 +119,6 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
 
         if (context instanceof SoundFragmentListener) {
             mSoundFragmentListener = (SoundFragmentListener) context;
-
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement SoundFragmentListener");
@@ -118,13 +126,41 @@ public class SoundFragment extends Fragment implements GenericDataSource.LoadLis
     }
 
     @Override
-    public void onListLoaded(List list) {
-        mAdapter.swap(list);
+    public void onChanged(@Nullable List<Audio> audioList) {
+
+        if(audioList.isEmpty()){
+
+            if(mSectionId == 0){
+                loaded("Favorite list is empty \n swipe left to check audios");
+            }else{
+                loaded("List is empty");
+            }
+            return;
+        }else{
+            mAdapter.swap(audioList);
+        }
+
+        loaded(null);
     }
 
-    @Override
-    public void onDataNotAvailable() {
+    private void loaded(String message){
 
+        mProgressBar.setVisibility(View.GONE);
+
+        if(message != null){
+            mGridRecyclerView.setVisibility(View.GONE);
+            mMessage.setVisibility(View.VISIBLE);
+            mMessage.setText(message);
+        }else{
+            mGridRecyclerView.setVisibility(View.VISIBLE);
+            mMessage.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void loading(){
+        mProgressBar.setVisibility(View.VISIBLE);
+        mGridRecyclerView.setVisibility(View.GONE);
     }
 
     public interface SoundFragmentListener{

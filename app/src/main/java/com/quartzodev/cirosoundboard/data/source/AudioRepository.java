@@ -42,28 +42,29 @@ public class AudioRepository implements AudioDataSource {
     }
 
     @Override
-    public void getAudiosBySectionId(@NonNull final Long sectionId, @NonNull final GenericDataSource.LoadListCallback<Audio> callback) {
-        checkNotNull(callback);
+    public LiveData<List<Audio>> getAudiosBySectionId(@NonNull final Long sectionId) {
         checkNotNull(sectionId);
 
-        if(mCachedAudio != null && mCachedAudio.containsKey(sectionId)){
-            callback.onListLoaded(mCachedAudio.get(sectionId));
-        }
+        return mAudioDataSource.getAudiosBySectionId(sectionId);
 
-        mAudioDataSource.getAudiosBySectionId(sectionId, new GenericDataSource.LoadListCallback<Audio>() {
-            @Override
-            public void onListLoaded(List<Audio> list) {
-
-                refreshCacheAudio(sectionId, list);
-
-                callback.onListLoaded(list);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                callback.onDataNotAvailable();
-            }
-        });
+//        if(mCachedAudio != null && mCachedAudio.containsKey(sectionId)){
+//            callback.onListLoaded(mCachedAudio.get(sectionId));
+//        }
+//
+//        mAudioDataSource.getAudiosBySectionId(sectionId, new GenericDataSource.LoadListCallback<Audio>() {
+//            @Override
+//            public void onListLoaded(List<Audio> list) {
+//
+//                refreshCacheAudio(sectionId, list);
+//
+//                callback.onListLoaded(list);
+//            }
+//
+//            @Override
+//            public void onDataNotAvailable() {
+//                callback.onDataNotAvailable();
+//            }
+//        });
 
     }
 

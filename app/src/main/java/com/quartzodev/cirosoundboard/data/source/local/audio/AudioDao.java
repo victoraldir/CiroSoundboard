@@ -20,7 +20,7 @@ public interface AudioDao {
     List<Audio> getAudios();
 
     @Query("SELECT * FROM Audio WHERE audio.section_id = :sectionId")
-    List<Audio> getAudiosBySectionId(Long sectionId);
+    LiveData<List<Audio>> getAudiosBySectionId(Long sectionId);
 
     @Query("SELECT * FROM Audio ORDER BY RANDOM() LIMIT 1")
     Audio getRandomAudio();
