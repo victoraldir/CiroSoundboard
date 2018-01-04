@@ -17,7 +17,7 @@ import com.quartzodev.cirosoundboard.data.source.local.section.SectionDao;
  * Created by victoraldir on 17/12/2017.
  */
 
-@Database(entities = {Audio.class, Section.class}, version = 3)
+@Database(entities = {Audio.class, Section.class}, version = 4)
 public abstract class CiroSoundBoardDatabase extends RoomDatabase {
 
     private static CiroSoundBoardDatabase INSTANCE;
@@ -35,6 +35,7 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
                         CiroSoundBoardDatabase.class, "CiroSoundBoard.db")
                         .addMigrations(MIGRATION_1_2)
                         .addMigrations(MIGRATION_2_3)
+                        .addMigrations(MIGRATION_3_4)
                         .addCallback(callback)
                         .build();
             }
@@ -120,6 +121,18 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("UPDATE audio SET flag_new = 1");
+
+        }
+    };
+
+
+    private static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            for(int x=5; x < 15; x++){
+                database.execSQL("INSERT INTO section ('id', 'label', 'order') VALUES ("+ x +",'Section "+ x +"',0)");
+            }
+
 
         }
     };

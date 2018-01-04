@@ -69,6 +69,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
         setSupportActionBar(mToolbar);
 
+        setupToolbar();
         setupFloatButton();
         setupViewPager();
         setupDrawer();
@@ -79,6 +80,11 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
         mAppExecutors = new AppExecutors();
 
+    }
+
+    public void setupToolbar() {
+        mToolbar.setTitle(getString(R.string.app_name));
+        mToolbar.setSubtitle(getString(R.string.app_sub_name));
     }
 
     public void setupFloatButton() {
@@ -93,7 +99,10 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         mSectionsPagerAdapter = new SoundSectionsPagerAdapter(getSupportFragmentManager(), new ArrayList<Section>());
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(mViewPager);
+
     }
 
     public void setupDrawer() {
@@ -133,7 +142,8 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            aboutIntent();
             return true;
         }
 
@@ -197,7 +207,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     @Override
     public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
         mMultiSelect = true;
-        menu.add(getString(R.string.share));
+        menu.add(getString(R.string.share_audio));
         return true;
     }
 
@@ -209,7 +219,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     @Override
     public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
 
-        if (menuItem.getTitle().equals(getString(R.string.share))) {
+        if (menuItem.getTitle().equals(getString(R.string.share_audio))) {
 
             Runnable taskWriteSong = new Runnable() {
                 @Override
@@ -321,6 +331,13 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
                 .start(this);
     }
 
+    public void surveyIntent(){
+        String url = "https://goo.gl/forms/1QhmbIDT1Cc4sXam1";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -328,6 +345,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
         switch (menuId){
             case R.id.nav_send_suggestion:
+                surveyIntent();
                 return false;
             case R.id.nav_share:
                 shareApp();

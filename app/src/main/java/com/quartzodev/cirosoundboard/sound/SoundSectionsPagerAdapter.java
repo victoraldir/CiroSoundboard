@@ -51,6 +51,10 @@ public class SoundSectionsPagerAdapter extends FragmentStatePagerAdapter {
         return SoundFragment.newInstance(mSectionList.get(position).getId());
     }
 
+    public int getItemPosition(Object item) {
+        return POSITION_NONE;
+    }
+
     @Override
     public CharSequence getPageTitle(int position) {
         return mSectionList.get(position).getLabel();
