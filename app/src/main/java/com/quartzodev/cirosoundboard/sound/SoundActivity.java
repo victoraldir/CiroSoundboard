@@ -22,6 +22,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.quartzodev.cirosoundboard.R;
@@ -29,6 +34,7 @@ import com.quartzodev.cirosoundboard.ViewModelFactory;
 import com.quartzodev.cirosoundboard.data.Audio;
 import com.quartzodev.cirosoundboard.data.Section;
 import com.quartzodev.cirosoundboard.data.source.GenericDataSource;
+import com.quartzodev.cirosoundboard.utils.AnswersUtil;
 import com.quartzodev.cirosoundboard.utils.AppExecutors;
 import com.quartzodev.cirosoundboard.utils.AppMediaPlayer;
 import com.quartzodev.cirosoundboard.utils.FileUtils;
@@ -38,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.fabric.sdk.android.Fabric;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class SoundActivity extends AppCompatActivity implements SoundFragment.SoundFragmentListener,
@@ -53,6 +60,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     private Toolbar mToolbar;
     private ActionMode mMode;
     private AppExecutors mAppExecutors;
+    private AdView mAdView;
 
     private boolean mMultiSelect = false;
     private Map<Audio, View> mSelectedItems = new HashMap<Audio, View>();
@@ -61,14 +69,19 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics(), new Answers());
         setContentView(R.layout.sound_act);
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, getString(R.string.app_id));
 
         mCoordinatorLayout = findViewById(R.id.main_content);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mAdView = (AdView) findViewById(R.id.adView);
 
         setSupportActionBar(mToolbar);
 
+        loadAdView();
         setupToolbar();
         setupFloatButton();
         setupViewPager();
@@ -80,6 +93,12 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
         mAppExecutors = new AppExecutors();
 
+    }
+
+
+    public void loadAdView(){
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     public void setupToolbar() {
@@ -154,6 +173,9 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     public void onClick(Audio audio, FancyButton fancyButton, View container) {
 
         if (!mMultiSelect) {
+
+            AnswersUtil.onPlayAudioMetric(audio);
+
             mAppMediaPlayer.setButton(fancyButton);
             mAppMediaPlayer.playAudio(audio.getAudioPath());
 
@@ -175,6 +197,10 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
     @Override
     public void onFavoriteClick(Audio audio, boolean flag) {
+
+        if(flag)
+            AnswersUtil.onFavoriteAudioMetric(audio);
+
         audio.setFavorite(flag);
         mSoundViewModel.updateAudio(audio);
         Snackbar.make(mCoordinatorLayout, "Audio " + audio.getLabel() + " flagged as " + (flag ? "favorite" : "not favorite"), Snackbar.LENGTH_LONG)
@@ -268,6 +294,8 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         ArrayList<Uri> uriList = new ArrayList<>();
 
         for (Audio audioToShare : audioList) {
+
+            AnswersUtil.onShareAudioMetric(audioToShare);
 
             Uri fileToShareUri = FileUtils.getExistingFile(this, audioToShare.getLabel());
 

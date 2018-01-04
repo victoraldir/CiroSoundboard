@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 26
@@ -81,10 +82,20 @@ dependencies {
     androidTestCompile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.google.code.findbugs:jsr305:$rootProject.findbugVersion"
 
+    compile "com.google.android.gms:play-services-ads:$rootProject.playServicesAdsVersion"
+
     compile "com.github.medyo:fancybuttons:$rootProject.fancyButtonsVersion"
 
     implementation("com.mikepenz:aboutlibraries:$rootProject.aboutLibrariesVersion") {
         transitive = true
+    }
+
+    compile("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
+        transitive = true;
+    }
+
+    compile("com.crashlytics.sdk.android:answers:$rootProject.answersVersion") {
+        transitive = true;
     }
 
 }
