@@ -37,8 +37,8 @@ public class SoundViewModel extends ViewModel {
         return mAudioRepository.getAudiosBySectionId(sectionId);
     }
 
-    public void updateFavoriteFlag(Long sectionId, boolean flag){
-        mAudioRepository.updateFavoriteFlag(sectionId,flag);
+    public void updateAudio(Audio audio){
+        mAudioRepository.updateAudio(audio);
     }
 
     public void loadRandomAudio(GenericDataSource.GetObjectCallback<Audio> callback) {

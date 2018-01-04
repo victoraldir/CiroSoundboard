@@ -25,11 +25,6 @@ public class AudioRepository implements AudioDataSource {
 
     private AudioDataSource mAudioDataSource;
 
-    /**
-     * This variable has package local visibility so it can be accessed from tests.
-     */
-    Map<Long, List<Audio>> mCachedAudio;
-
     private AudioRepository(AudioDataSource audioDataSource){
         mAudioDataSource = audioDataSource;
     }
@@ -46,26 +41,6 @@ public class AudioRepository implements AudioDataSource {
         checkNotNull(sectionId);
 
         return mAudioDataSource.getAudiosBySectionId(sectionId);
-
-//        if(mCachedAudio != null && mCachedAudio.containsKey(sectionId)){
-//            callback.onListLoaded(mCachedAudio.get(sectionId));
-//        }
-//
-//        mAudioDataSource.getAudiosBySectionId(sectionId, new GenericDataSource.LoadListCallback<Audio>() {
-//            @Override
-//            public void onListLoaded(List<Audio> list) {
-//
-//                refreshCacheAudio(sectionId, list);
-//
-//                callback.onListLoaded(list);
-//            }
-//
-//            @Override
-//            public void onDataNotAvailable() {
-//                callback.onDataNotAvailable();
-//            }
-//        });
-
     }
 
     @Override
@@ -74,21 +49,14 @@ public class AudioRepository implements AudioDataSource {
     }
 
     @Override
-    public void updateFavoriteFlag(@NonNull Long sectionId, @NonNull boolean flagFavorite) {
-        mAudioDataSource.updateFavoriteFlag(sectionId, flagFavorite);
+    public void updateAudio(@NonNull Audio audio) {
+        mAudioDataSource.updateAudio(audio);
     }
+
 
     @Override
     public LiveData<List<Audio>> loadFavorite() {
         return mAudioDataSource.loadFavorite();
     }
 
-    private void refreshCacheAudio(Long sectionId ,List<Audio> audioList) {
-        if (mCachedAudio == null) {
-            mCachedAudio = new LinkedHashMap<>();
-        }
-        mCachedAudio.clear();
-
-        mCachedAudio.put(sectionId, audioList);
-    }
 }

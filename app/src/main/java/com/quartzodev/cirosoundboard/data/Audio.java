@@ -38,11 +38,11 @@ public class Audio {
 
     @NonNull()
     @ColumnInfo(name = "flag_new")
-    private final boolean isNew;
+    private boolean isNew;
 
     @NonNull()
     @ColumnInfo(name = "flag_favorite")
-    private final boolean isFavorite;
+    private boolean isFavorite;
 
     public Audio(@NonNull Long id, @NonNull String label, @NonNull String audioPath,
                  @NonNull Integer sectionId, @NonNull Integer order, @NonNull boolean isNew,
@@ -82,7 +82,16 @@ public class Audio {
     }
 
     @NonNull
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
+    }
+
+    @NonNull
     public boolean isFavorite() {
         return isFavorite;
+    }
+
+    public void setFavorite(boolean isFavorite){
+        this.isFavorite = isFavorite;
     }
 }

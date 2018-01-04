@@ -48,6 +48,8 @@ ext{
     archLifecycleVersion = "1.0.0"
 
     fancyButtonsVersion = "1.8.4"
+
+    aboutLibrariesVersion = "6.0.1@aar"
 }
 
 task clean(type: Delete) {

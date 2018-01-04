@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CiroSoundboard</string>
+    <string name="app_sub_name">The most well prepared presidentiable candidate soundboard</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
@@ -8,5 +9,35 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="share">Share this app</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="email">Email</string>
+    <string name="send">Suggest audio</string>
+    <string name="communicate">Communicate</string>
+    <string name="about">About</string>
+    <string name="send_to">Share to</string>
+    <string name="email_app">falasdocirogomes@gmail.com</string>
 
+    <string name="share_subject">Try this awesome app</string>
+    <string name="share_text">Hey check this cool app Falas do Ciro Gomes http://www.linkgoeshere.com</string>
+
+
+    <string name="aboutLibraries_description_showIcon" translatable="false">true</string>
+    <string name="aboutLibraries_description_showVersion" translatable="false">true</string>
+    <string name="aboutLibraries_description_text">
+
+         <![CDATA[
+         This app is not related to any party or politician.
+         All content shown here is widely available on the web as form of interviews given by the politician.
+         This app is an individual effort of mine - the developer - to promote who I think is the best option for my country as president
+          <br/>
+          Below you can find open source libraries used in this project.
+          <br/> If you find any <b>bug</b> or have any <b>suggestion</b>, please open an issue in here <a href="mailto:falasdocirogomes@gmail.com">Send me an email</a>
+          <br/>
+          <br/>
+          Developed with \u2764 by <a href="https://about.me/victoraldir">Victor Neves</a>
+]]>
+
+    </string>
 </resources>

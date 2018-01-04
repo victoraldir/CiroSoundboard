@@ -41,32 +41,7 @@ public class AudioDataSourceImpl implements AudioDataSource {
 
     @Override
     public LiveData<List<Audio>> getAudiosBySectionId(@NonNull final Long sectionId) {
-
         return mAudioDao.getAudiosBySectionId(sectionId);
-
-//        Runnable getAudiosTask = new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                final List<Audio> audioList = mAudioDao.getAudiosBySectionId(sectionId);
-//
-//                mAppExecutors.mainThread().execute(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        if(audioList.isEmpty()){
-//                            callback.onDataNotAvailable();
-//                        }else {
-//                            callback.onListLoaded(audioList);
-//                        };
-//                    }
-//                });
-//            }
-//
-//
-//        };
-//
-//        mAppExecutors.diskIO().execute(getAudiosTask);
     }
 
     @Override
@@ -97,16 +72,16 @@ public class AudioDataSourceImpl implements AudioDataSource {
     }
 
     @Override
-    public void updateFavoriteFlag(@NonNull final Long sectionId, @NonNull final boolean flagFavorite) {
-        Runnable getAudioTask = new Runnable() {
+    public void updateAudio(@NonNull final Audio audio) {
+        Runnable updateNewFlagTask = new Runnable() {
 
             @Override
             public void run() {
-                mAudioDao.updateFavoriteFlag(sectionId,flagFavorite);
+                mAudioDao.updateAudio(audio);
             }
         };
 
-        mAppExecutors.diskIO().execute(getAudioTask);
+        mAppExecutors.diskIO().execute(updateNewFlagTask);
     }
 
     @Override

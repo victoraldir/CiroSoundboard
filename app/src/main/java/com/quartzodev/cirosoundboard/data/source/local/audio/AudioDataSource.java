@@ -19,7 +19,7 @@ public interface AudioDataSource extends GenericDataSource {
 
     void getRandomAudio(@NonNull GenericDataSource.GetObjectCallback<Audio> callback);
 
-    void updateFavoriteFlag(@NonNull Long sectionId, @NonNull boolean flagFavorite);
+    void updateAudio(@NonNull Audio audio);
 
     LiveData<List<Audio>> loadFavorite();
 }

@@ -34,7 +34,8 @@ public class SoundSectionsPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public void swap(List<Section> sections){
-        setList(sections);
+        if(sections != null)
+            setList(sections);
     }
 
     private void setList(List<Section> sections) {

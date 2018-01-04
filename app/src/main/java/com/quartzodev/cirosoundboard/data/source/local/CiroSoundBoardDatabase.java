@@ -17,7 +17,7 @@ import com.quartzodev.cirosoundboard.data.source.local.section.SectionDao;
  * Created by victoraldir on 17/12/2017.
  */
 
-@Database(entities = {Audio.class, Section.class}, version = 1)
+@Database(entities = {Audio.class, Section.class}, version = 3)
 public abstract class CiroSoundBoardDatabase extends RoomDatabase {
 
     private static CiroSoundBoardDatabase INSTANCE;
@@ -33,6 +33,8 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         CiroSoundBoardDatabase.class, "CiroSoundBoard.db")
+                        .addMigrations(MIGRATION_1_2)
+                        .addMigrations(MIGRATION_2_3)
                         .addCallback(callback)
                         .build();
             }
@@ -93,21 +95,32 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
 
             super.onCreate(database);
         }
+
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+
+            db.execSQL("UPDATE audio SET flag_new = 1");
+
+            super.onOpen(db);
+        }
     };
 
     private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("INSERT INTO 'Section' ('id' INTEGER, 'label' TEXT, 'order' INTEGER) VALUES ('1','Default',0)");
+            database.execSQL("INSERT INTO 'Section' ('id', 'label', 'order') VALUES ('4','Clássicos',0)");
 
-            database.execSQL("INSERT INTO 'Audio' ('label' TEXT, 'order' INTEGER, 'audio_path' TEXT, section_id INTEGER) " +
-                    "VALUES ('Bilhao',0, 'bilhao',1)");
+            database.execSQL("INSERT INTO 'Audio' ('label', 'order', 'audio_path', 'section_id', 'flag_new', 'flag_favorite') " +
+                    "VALUES ('Vai frescar?',0, 'vai_frescar',4, 1, 0)");
 
-            database.execSQL("INSERT INTO 'Audio' ('label' TEXT, 'order' INTEGER, 'audio_path' TEXT, section_id INTEGER) " +
-                    "VALUES ('campeao_demissao',0, 'campeao_demissao',1)");
+        }
+    };
 
-            database.execSQL("INSERT INTO 'Audio' ('label' TEXT, 'order' INTEGER, 'audio_path' TEXT, section_id INTEGER) " +
-                    "VALUES ('onde_achar_bilhao',0, 'onde_achar_bilhao',1)");
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("UPDATE audio SET flag_new = 1");
+
         }
     };
 }

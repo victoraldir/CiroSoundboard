@@ -22,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.quartzodev.cirosoundboard.R;
 import com.quartzodev.cirosoundboard.ViewModelFactory;
 import com.quartzodev.cirosoundboard.data.Audio;
@@ -62,13 +64,14 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         setContentView(R.layout.sound_act);
 
         mCoordinatorLayout = findViewById(R.id.main_content);
-        // Set up the ViewPager with the sections adapter.
-
         mViewPager = (ViewPager) findViewById(R.id.container);
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
+
+        setupFloatButton();
+        setupViewPager();
+        setupDrawer();
 
         mAppMediaPlayer = AppMediaPlayer.newInstance(this, this);
         mSoundViewModel = obtainViewModel(this);
@@ -76,9 +79,6 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
         mAppExecutors = new AppExecutors();
 
-        setupFloatButton();
-        setupViewPager();
-        setupDrawer();
     }
 
     public void setupFloatButton() {
@@ -146,6 +146,12 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         if (!mMultiSelect) {
             mAppMediaPlayer.setButton(fancyButton);
             mAppMediaPlayer.playAudio(audio.getAudioPath());
+
+            if(audio.isNew()) {
+                audio.setNew(false);
+                mSoundViewModel.updateAudio(audio);
+            }
+
         } else {
             selectItem(audio, container);
         }
@@ -159,8 +165,8 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
     @Override
     public void onFavoriteClick(Audio audio, boolean flag) {
-        mSoundViewModel.updateFavoriteFlag(audio.getId(), flag);
-
+        audio.setFavorite(flag);
+        mSoundViewModel.updateAudio(audio);
         Snackbar.make(mCoordinatorLayout, "Audio " + audio.getLabel() + " flagged as " + (flag ? "favorite" : "not favorite"), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
@@ -191,7 +197,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     @Override
     public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
         mMultiSelect = true;
-        menu.add("Compartilhar");
+        menu.add(getString(R.string.share));
         return true;
     }
 
@@ -203,7 +209,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     @Override
     public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
 
-        if (menuItem.getTitle().equals("Compartilhar")) {
+        if (menuItem.getTitle().equals(getString(R.string.share))) {
 
             Runnable taskWriteSong = new Runnable() {
                 @Override
@@ -268,8 +274,80 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
     }
 
+    private void shareApp(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+    }
+
+    public void facebookIntent() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/2004974256454670"));
+            startActivity(intent);
+        } catch(Exception e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/Falas-Ciro-Gomes-2004974256454670")));
+        }
+    }
+
+    public void twitterIntent(){
+        Intent intent = null;
+        try {
+            // get the Twitter app if possible
+            this.getPackageManager().getPackageInfo("com.twitter.android", 0);
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=948635988892569601"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } catch (Exception e) {
+            // no Twitter app, revert to browser
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/FalasCiroGomes"));
+        }
+        this.startActivity(intent);
+    }
+
+    private void emailIntent(){
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto","falasdocirogomes@gmail.com", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Contact App Falas do Ciro Gomes");
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
+    }
+
+    public void aboutIntent(){
+        new LibsBuilder()
+                .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                .withAboutIconShown(true)
+                .withAboutVersionShown(true)
+                .start(this);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        int menuId = item.getItemId();
+
+        switch (menuId){
+            case R.id.nav_send_suggestion:
+                return false;
+            case R.id.nav_share:
+                shareApp();
+                return false;
+            case R.id.nav_facebook:
+                facebookIntent();
+                return false;
+            case R.id.nav_twitter:
+                twitterIntent();
+                return false;
+            case R.id.nav_email:
+                emailIntent();
+                return false;
+            case R.id.nav_about:
+                aboutIntent();
+                return false;
+            default:
+                break;
+        }
+
         return false;
     }
 }

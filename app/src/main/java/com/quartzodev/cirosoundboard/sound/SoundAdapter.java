@@ -64,6 +64,12 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
             holder.mImageView.setTag(false);
         }
 
+        if(audio.isNew()) {
+            holder.mImageNew.setVisibility(View.VISIBLE);
+        }else{
+            holder.mImageNew.setVisibility(View.GONE);
+        }
+
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,13 +83,13 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
                     holder.mImageView.setTag(true);
                     mListener.onFavoriteClick(audio,true);
                 }
-
             }
         });
 
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 mListener.onClick(audio, button, container);
             }
         });
@@ -91,6 +97,7 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 mListener.onClick(audio, button, container);
             }
         });
@@ -124,9 +131,11 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
         FancyButton mBtnAudio;
         LinearLayout mContainer;
         ImageView mImageView;
+        ImageView mImageNew;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mImageNew = itemView.findViewById(R.id.icon_new);
             mContainer = itemView.findViewById(R.id.container_btn);
             mBtnAudio = itemView.findViewById(R.id.btn_audio);
             mLabelAudio = itemView.findViewById(R.id.label_audio);
