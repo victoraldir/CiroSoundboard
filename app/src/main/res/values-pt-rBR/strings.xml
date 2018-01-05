@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Falas do Ciro</string>
+    <string name="app_sub_name">Áudios do presidenciável mais preparado do Brasil</string>
+    <string name="navigation_drawer_open">Abrir gaveta</string>
+    <string name="navigation_drawer_close">Fechar gaveta</string>
+    <string name="share_audio">Compartilhar áudio</string>
+    <string name="share">Compartilhar aplicativo</string>
+    <string name="send">Sugira áudios</string>
+    <string name="communicate">Contato</string>
+    <string name="about">Sobre</string>
+    <string name="send_to">Compartilhar com</string>
+    <string name="share_subject">Instale os aplicativo Falas do Ciro Gomes</string>
+    <string name="share_text">Olá! Olha que legal essa app \'Falas do Ciro Gomes\' - www.siteappgoeshere.com</string>
+
+    <string name="aboutLibraries_description_text">
+
+         <![CDATA[
+         Este aplicativo não tem vínculos com nenhum partido ou político.
+         Todo o conteúdo presente aqui está amplamente disponível na web na forma de entrevistas dadas
+         pelo político. Caso julgue necessária a exclusão de algum arquivo aqui presente, favor entrar em contato.
+
+          <br/>
+          Abaixo você pode encontrar bibliotecas abertas usadas neste projeto.
+          <br/> Caso encontre algum <b>problema</b> ou caso tenha <b>sugestões</b>, por favor, <a href="mailto:falasdocirogomes@gmail.com">me mande um email</a>
+          <br/>
+          <br/>
+          Desenvolvido com \u2764 por <a href="https://about.me/victoraldir">Victor Neves</a>
+]]>
+
+    </string>
+    <string name="favorite_empty">Lista de favoritos está vazia</string>
+    <string name="favorite_empty_sub_message">Deslize para a esquerda e confira os áudios</string>
+    <string name="list_empty">Lista está vazia</string>
+</resources>

@@ -35,6 +35,7 @@ public class SoundFragment extends Fragment implements Observer<List<Audio>> {
     private Long mSectionId;
     private ProgressBar mProgressBar;
     private TextView mMessage;
+    private TextView mSubMessage;
 
     private static final String ARG_SECTION_ID = "section_id";
 
@@ -86,9 +87,11 @@ public class SoundFragment extends Fragment implements Observer<List<Audio>> {
 
         mMessage = rootView.findViewById(R.id.message);
 
+        mSubMessage = rootView.findViewById(R.id.sub_message);
+
         mGridRecyclerView = rootView.findViewById(R.id.grid_audio);
 
-        RecyclerView.LayoutManager lm = new GridLayoutManager(getContext(), 3);
+        RecyclerView.LayoutManager lm = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.list_column_count));
         mGridRecyclerView.setLayoutManager(lm);
         mAdapter = new SoundAdapter(new ArrayList<Audio>(), mSoundFragmentListener);
 
@@ -131,19 +134,19 @@ public class SoundFragment extends Fragment implements Observer<List<Audio>> {
         if(audioList.isEmpty()){
 
             if(mSectionId == 0){
-                loaded("Favorite list is empty \n swipe left to check audios");
+                loaded(getString(R.string.favorite_empty_message), getString(R.string.favorite_empty_sub_message));
             }else{
-                loaded("List is empty");
+                loaded(getString(R.string.list_empty),"");
             }
             return;
         }else{
             mAdapter.swap(audioList);
         }
 
-        loaded(null);
+        loaded(null,null);
     }
 
-    private void loaded(String message){
+    private void loaded(String message, String subMessage){
 
         mProgressBar.setVisibility(View.GONE);
 
@@ -156,6 +159,10 @@ public class SoundFragment extends Fragment implements Observer<List<Audio>> {
             mMessage.setVisibility(View.GONE);
         }
 
+        if(subMessage != null){
+            mSubMessage.setVisibility(View.VISIBLE);
+            mSubMessage.setText(subMessage);
+        }
     }
 
     private void loading(){

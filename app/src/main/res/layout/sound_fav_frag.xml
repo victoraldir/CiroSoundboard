@@ -20,12 +20,26 @@
         android:visibility="gone"
         android:layout_height="match_parent" />
 
-    <TextView
-        tools:text="Any message"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:gravity="center">
+    <TextView
+        tools:text="Any message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/message"
         android:gravity="center"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+
+    <TextView
+        tools:text="Any Sub Message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sub_message"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_below="@+id/message"/>
+    </RelativeLayout>
 
 </LinearLayout>

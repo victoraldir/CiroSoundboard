@@ -1,26 +1,22 @@
 <resources>
     <string name="app_name">Ciro Gomes Soundboard</string>
-    <string name="app_sub_name">Audios</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="app_sub_name">Audios of Ciro Gomes</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="share_audio">Share this audio</string>
     <string name="share">Share this app</string>
-    <string name="facebook">Facebook</string>
-    <string name="twitter">Twitter</string>
-    <string name="email">Email</string>
+    <string name="facebook" translatable="false">Facebook</string>
+    <string name="twitter" translatable="false">Twitter</string>
+    <string name="email" translatable="false">Email</string>
     <string name="send">Suggest audio</string>
     <string name="communicate">Communicate</string>
     <string name="about">About</string>
     <string name="send_to">Share to</string>
-    <string name="email_app">falasdocirogomes@gmail.com</string>
+    <string name="email_app" translatable="false">falasdocirogomes@gmail.com</string>
 
     <string name="share_subject">Try this awesome app</string>
-    <string name="share_text">Hey check this cool app Falas do Ciro Gomes http://www.linkgoeshere.com</string>
+    <string name="share_text">Hey check this cool app \'Falas do Ciro Gomes\' - www.siteappgoeshere.com</string>
 
 
     <string name="aboutLibraries_description_showIcon" translatable="false">true</string>
@@ -40,6 +36,9 @@
 ]]>
 
     </string>
-    <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="favorite_empty_message">Favorite list is empty</string>
+    <string name="favorite_empty_sub_message">Swipe left to check audios</string>
+    <string name="list_empty">List is empty</string>
 </resources>
