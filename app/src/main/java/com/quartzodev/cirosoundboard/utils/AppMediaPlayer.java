@@ -62,7 +62,7 @@ public class AppMediaPlayer implements LifecycleObserver, MediaPlayer.OnPrepared
 
         try {
 
-            if(lastResourceName != null && lastResourceName.equals(resourceName)){
+            if(lastResourceName != null && lastResourceName.equals(resourceName) && mPlayer.isPlaying()){
                 lastResourceName = null;
                 toggleButtonPlaying(false);
                 mPlayer.reset();
@@ -70,6 +70,21 @@ public class AppMediaPlayer implements LifecycleObserver, MediaPlayer.OnPrepared
             }
 
             lastResourceName = resourceName;
+
+            mPlayer.reset();
+            mPlayer.setDataSource(mContext, UriUtils.getResourceUri(resourceName,mContext));
+            mPlayer.prepareAsync();
+
+            toggleButtonPlaying(true);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void playRandomAudio(String resourceName){
+
+        try {
 
             mPlayer.reset();
             mPlayer.setDataSource(mContext, UriUtils.getResourceUri(resourceName,mContext));
@@ -84,10 +99,8 @@ public class AppMediaPlayer implements LifecycleObserver, MediaPlayer.OnPrepared
         if(mFancyButton != null){
 
             if(flag){
-//                mFancyButton.setText("PAUSE");
                 mFancyButton.setIconResource("\uf04c");
             }else{
-//                mFancyButton.setText("PLAY");
                 mFancyButton.setIconResource("\uf04b");
             }
 
@@ -97,7 +110,6 @@ public class AppMediaPlayer implements LifecycleObserver, MediaPlayer.OnPrepared
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         mPlayer.start();
-        toggleButtonPlaying(true);
     }
 
     @Override

@@ -48,7 +48,7 @@ import io.fabric.sdk.android.Fabric;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class SoundActivity extends AppCompatActivity implements SoundFragment.SoundFragmentListener,
-        GenericDataSource.LoadListCallback<Section>, GenericDataSource.GetObjectCallback<Audio>,
+        GenericDataSource.LoadListCallback<Section>,
         View.OnClickListener, android.view.ActionMode.Callback,
         NavigationView.OnNavigationItemSelectedListener {
 
@@ -203,8 +203,16 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
         audio.setFavorite(flag);
         mSoundViewModel.updateAudio(audio);
-        Snackbar.make(mCoordinatorLayout, "Audio " + audio.getLabel() + " flagged as " + (flag ? "favorite" : "not favorite"), Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+
+        String msg;
+
+        if(flag){
+            msg = String.format(getString(R.string.favorite_audio),audio.getLabel());
+        }else{
+            msg = String.format(getString(R.string.not_favorite_audio),audio.getLabel());
+        }
+
+        Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -213,21 +221,25 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     }
 
     @Override
-    public void onObjectLoaded(Audio audio) {
-
-        mAppMediaPlayer.playAudio(audio.getAudioPath());
-        Snackbar.make(mCoordinatorLayout, "Playing " + audio.getLabel() + " audio", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
-
-    @Override
     public void onDataNotAvailable() {
-
     }
 
     @Override
     public void onClick(View view) {
-        mSoundViewModel.loadRandomAudio(this);
+        mSoundViewModel.loadRandomAudio(new GenericDataSource.GetObjectCallback<Audio>() {
+            @Override
+            public void onObjectLoaded(Audio audio) {
+                mAppMediaPlayer.playRandomAudio(audio.getAudioPath());
+
+                Snackbar.make(mCoordinatorLayout, String.format(getString(R.string.playing_audio),audio.getLabel()), Snackbar.LENGTH_LONG)
+                        .show();
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     @Override

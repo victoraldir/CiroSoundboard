@@ -32,4 +32,8 @@
     <string name="favorite_empty">Lista de favoritos está vazia</string>
     <string name="favorite_empty_sub_message">Deslize para a esquerda e confira os áudios</string>
     <string name="list_empty">Lista está vazia</string>
+
+    <string name="playing_audio">Tocando %1$s</string>
+    <string name="favorite_audio">Áudio %1$s marcado como favorito</string>
+    <string name="not_favorite_audio">"Áudio %1$s marcado como não favorito</string>
 </resources>

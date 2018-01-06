@@ -41,4 +41,8 @@
     <string name="favorite_empty_message">Favorite list is empty</string>
     <string name="favorite_empty_sub_message">Swipe left to check audios</string>
     <string name="list_empty">List is empty</string>
+    <string name="playing_audio">Playing %1$s</string>
+    <string name="favorite_audio">"Audio %1$s marked as favorite</string>
+    <string name="not_favorite_audio">"Audio %1$s marked as not favorite</string>
+
 </resources>
