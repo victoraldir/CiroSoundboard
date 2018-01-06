@@ -320,7 +320,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE).setType("audio/x-mpeg3");
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
-        startActivity(Intent.createChooser(intent, "Share to"));
+        startActivity(Intent.createChooser(intent, getString(R.string.send_to)));
 
     }
 

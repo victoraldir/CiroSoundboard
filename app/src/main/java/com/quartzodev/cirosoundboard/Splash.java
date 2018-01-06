@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.quartzodev.cirosoundboard.sound.SoundActivity;
 
-public class SplashActivity extends AppCompatActivity {
+public class Splash extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
