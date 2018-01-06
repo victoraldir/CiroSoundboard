@@ -5,7 +5,6 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
-
 import com.quartzodev.cirosoundboard.data.source.AudioRepository;
 import com.quartzodev.cirosoundboard.data.source.SectionRepository;
 import com.quartzodev.cirosoundboard.data.source.local.CiroSoundBoardDatabase;

@@ -75,9 +75,9 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         MobileAds.initialize(this, getString(R.string.app_id));
 
         mCoordinatorLayout = findViewById(R.id.main_content);
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mAdView = (AdView) findViewById(R.id.adView);
+        mViewPager = findViewById(R.id.container);
+        mToolbar = findViewById(R.id.toolbar);
+        mAdView = findViewById(R.id.adView);
 
         setSupportActionBar(mToolbar);
 
@@ -107,7 +107,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     }
 
     public void setupFloatButton() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
     }
 
@@ -117,7 +117,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         // primary sections of the activity.
         mSectionsPagerAdapter = new SoundSectionsPagerAdapter(getSupportFragmentManager(), new ArrayList<Section>());
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(mViewPager);
@@ -125,13 +125,13 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     }
 
     public void setupDrawer() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 

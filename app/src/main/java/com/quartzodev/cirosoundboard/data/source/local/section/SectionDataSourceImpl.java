@@ -2,7 +2,6 @@ package com.quartzodev.cirosoundboard.data.source.local.section;
 
 import android.support.annotation.NonNull;
 
-import com.quartzodev.cirosoundboard.data.Audio;
 import com.quartzodev.cirosoundboard.data.Section;
 import com.quartzodev.cirosoundboard.utils.AppExecutors;
 
@@ -53,7 +52,7 @@ public class SectionDataSourceImpl implements SectionDataSource {
                             callback.onDataNotAvailable();
                         }else {
                             callback.onListLoaded(sectionList);
-                        };
+                        }
                     }
                 });
             }

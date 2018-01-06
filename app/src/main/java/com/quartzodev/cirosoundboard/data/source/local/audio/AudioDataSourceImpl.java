@@ -4,8 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.quartzodev.cirosoundboard.data.Audio;
-import com.quartzodev.cirosoundboard.data.Section;
-import com.quartzodev.cirosoundboard.data.source.GenericDataSource;
 import com.quartzodev.cirosoundboard.utils.AppExecutors;
 
 import java.util.List;
@@ -60,7 +58,7 @@ public class AudioDataSourceImpl implements AudioDataSource {
                             callback.onObjectLoaded(audio);
                         }else {
                             callback.onDataNotAvailable();
-                        };
+                        }
                     }
                 });
             }

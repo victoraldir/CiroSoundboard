@@ -29,7 +29,7 @@
 ]]>
 
     </string>
-    <string name="favorite_empty">Lista de favoritos está vazia</string>
+    <string name="favorite_empty_message">Lista de favoritos está vazia</string>
     <string name="favorite_empty_sub_message">Deslize para a esquerda e confira os áudios</string>
     <string name="list_empty">Lista está vazia</string>
 

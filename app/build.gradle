@@ -104,11 +104,11 @@ dependencies {
     }
 
     compile("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
-        transitive = true;
+        transitive = true
     }
 
     compile("com.crashlytics.sdk.android:answers:$rootProject.answersVersion") {
-        transitive = true;
+        transitive = true
     }
 
 }
