@@ -49,14 +49,7 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
     private static final RoomDatabase.Callback callback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase database) {
-
             super.onCreate(database);
-        }
-
-        @Override
-        public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            initialScript(db);
-            super.onOpen(db);
         }
     };
 
@@ -68,9 +61,10 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
         }
     };
 
-    private static final Migration MIGRATION_2_3 = new Migration(1, 2) {
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
+            cleanUpDatabase(database);
             initialScript(database);
         }
     };

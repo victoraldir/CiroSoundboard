@@ -16,7 +16,7 @@
     <string name="email_app" translatable="false">falasdocirogomes@gmail.com</string>
 
     <string name="share_subject">Try this awesome app</string>
-    <string name="share_text">Hey check this cool app \'Falas do Ciro Gomes\' - www.siteappgoeshere.com</string>
+    <string name="share_text">Hey check this cool app \'Falas do Ciro Gomes\' - https://play.google.com/store/apps/details?id=com.quartzodev.cirosoundboard</string>
 
 
     <string name="aboutLibraries_description_showIcon" translatable="false">true</string>

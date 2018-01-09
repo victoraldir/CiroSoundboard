@@ -28,7 +28,7 @@
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="KEY_GOES_HERE"
+            android:value="535eaf4515793975a58e16aa0c097291ed581443"
             />
 
         <provider

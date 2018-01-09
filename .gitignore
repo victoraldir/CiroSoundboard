@@ -17,3 +17,4 @@ Appfile
 report.xml
 fabric.properties
 gradle.properties
+/app/release/
