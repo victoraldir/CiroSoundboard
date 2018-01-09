@@ -16,7 +16,7 @@ import java.util.List;
 @Dao
 public interface AudioDao {
 
-    @Query("SELECT * FROM Audio WHERE audio.section_id = :sectionId")
+    @Query("SELECT * FROM Audio WHERE audio.section_id = :sectionId ORDER BY audio.`order`")
     LiveData<List<Audio>> getAudiosBySectionId(Long sectionId);
 
     @Query("SELECT * FROM Audio ORDER BY RANDOM() LIMIT 1")

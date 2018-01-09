@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.quartzodev.cirosoundboard.R;
 import com.quartzodev.cirosoundboard.data.Section;
 
 import java.util.List;
@@ -15,17 +16,20 @@ import java.util.List;
 public class SoundSectionsPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Section> mSectionList;
+    private String mFavoriteLabel;
 
 
     public SoundSectionsPagerAdapter(FragmentManager fm,
-                                     List<Section> sectionList) {
+                                     List<Section> sectionList,
+                                     String favoriteLabel) {
         super(fm);
         mSectionList = sectionList;
+        mFavoriteLabel = favoriteLabel;
         addFavorite();
     }
 
     private void addFavorite(){
-        Section favSection = new Section(new Long(0),"Favorite",0);
+        Section favSection = new Section(new Long(0),mFavoriteLabel,0);
         mSectionList.add(0,favSection);
     }
 

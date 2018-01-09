@@ -158,7 +158,7 @@ public class SoundFragment extends Fragment implements Observer<List<Audio>> {
             mMessage.setVisibility(View.GONE);
         }
 
-        if(subMessage != null){
+        if(subMessage != null && mSubMessage != null){
             mSubMessage.setVisibility(View.VISIBLE);
             mSubMessage.setText(subMessage);
         }

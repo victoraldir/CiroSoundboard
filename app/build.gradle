@@ -14,6 +14,7 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+
             }
         }
     }
@@ -110,5 +111,7 @@ dependencies {
     compile("com.crashlytics.sdk.android:answers:$rootProject.answersVersion") {
         transitive = true
     }
+
+    compile 'com.facebook.stetho:stetho:1.5.0'
 
 }

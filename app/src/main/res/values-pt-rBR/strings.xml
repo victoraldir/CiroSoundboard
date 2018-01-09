@@ -36,4 +36,5 @@
     <string name="playing_audio">Tocando %1$s</string>
     <string name="favorite_audio">Áudio %1$s marcado como favorito</string>
     <string name="not_favorite_audio">"Áudio %1$s marcado como não favorito</string>
+    <string name="tab_favorite">Favoritos</string>
 </resources>

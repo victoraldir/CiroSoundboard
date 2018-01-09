@@ -44,5 +44,6 @@
     <string name="playing_audio">Playing %1$s</string>
     <string name="favorite_audio">"Audio %1$s marked as favorite</string>
     <string name="not_favorite_audio">"Audio %1$s marked as not favorite</string>
+    <string name="tab_favorite">Favorites</string>
 
 </resources>
