@@ -36,6 +36,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+        debug{
+            ext.enableCrashlytics = false
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -104,11 +107,11 @@ dependencies {
         transitive = true
     }
 
-    compile("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
+    releaseCompile("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
         transitive = true
     }
 
-    compile("com.crashlytics.sdk.android:answers:$rootProject.answersVersion") {
+    releaseCompile("com.crashlytics.sdk.android:answers:$rootProject.answersVersion") {
         transitive = true
     }
 
