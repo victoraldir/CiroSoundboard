@@ -1,6 +1,5 @@
 package com.quartzodev.cirosoundboard.sound;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import com.quartzodev.cirosoundboard.data.Audio;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 /**

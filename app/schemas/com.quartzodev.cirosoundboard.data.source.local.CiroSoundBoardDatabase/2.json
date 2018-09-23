@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "50a1f2b1362eb2dad8164be9a4a30595",
+    "identityHash": "e74aaef74ebabc0e42b9115f76597b50",
     "entities": [
       {
         "tableName": "audio",
@@ -116,7 +116,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"50a1f2b1362eb2dad8164be9a4a30595\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e74aaef74ebabc0e42b9115f76597b50\")"
     ]
   }
 }

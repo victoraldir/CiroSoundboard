@@ -1,11 +1,11 @@
 package com.quartzodev.cirosoundboard.data.source.local.section;
 
-import android.support.annotation.NonNull;
-
 import com.quartzodev.cirosoundboard.data.Section;
 import com.quartzodev.cirosoundboard.utils.AppExecutors;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by victoraldir on 20/12/2017.

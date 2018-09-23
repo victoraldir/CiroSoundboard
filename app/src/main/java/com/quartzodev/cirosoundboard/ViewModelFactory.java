@@ -2,8 +2,6 @@ package com.quartzodev.cirosoundboard;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 
 import com.quartzodev.cirosoundboard.data.source.AudioRepository;
 import com.quartzodev.cirosoundboard.data.source.SectionRepository;
@@ -12,6 +10,9 @@ import com.quartzodev.cirosoundboard.data.source.local.audio.AudioDataSourceImpl
 import com.quartzodev.cirosoundboard.data.source.local.section.SectionDataSourceImpl;
 import com.quartzodev.cirosoundboard.sound.SoundViewModel;
 import com.quartzodev.cirosoundboard.utils.AppExecutors;
+
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

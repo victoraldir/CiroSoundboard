@@ -1,13 +1,12 @@
 package com.quartzodev.cirosoundboard.sound;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-
-import com.quartzodev.cirosoundboard.R;
 import com.quartzodev.cirosoundboard.data.Section;
 
 import java.util.List;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 /**
  * Created by victoraldir on 17/12/2017.

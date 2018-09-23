@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.quartzodev.cirosoundboard"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 5
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -18,7 +18,6 @@ android {
             }
         }
     }
-
     signingConfigs {
         release {
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
@@ -29,7 +28,6 @@ android {
             }
         }
     }
-
     buildTypes {
         release {
             minifyEnabled true
@@ -41,77 +39,43 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+    buildToolsVersion '28.0.2'
 
-    configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    packagingOptions {
+        exclude 'META-INF/androidx.*'
+        exclude 'META-INF/proguard/*'
     }
 }
 
 dependencies {
+
     // App's dependencies, including test
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.google.guava:guava:$rootProject.guavaVersion"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
+    implementation "com.google.android.material:material:$rootProject.supportLibraryVersion"
+
+    implementation "com.google.guava:guava:$rootProject.guavaVersion"
 
     // Architecture Components
-    compile "android.arch.persistence.room:runtime:$rootProject.roomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
-    compile "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
 
-    // Dependencies for local unit tests
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
-    testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
-    testCompile "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
-
-    // Android Testing Support Library's runner and rules
-    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestCompile "com.android.support.test:rules:$rootProject.ext.rulesVersion"
-    androidTestCompile "android.arch.persistence.room:testing:$rootProject.roomVersion"
-
-    // Dependencies for Android unit tests
-    androidTestCompile "junit:junit:$rootProject.ext.junitVersion"
-    androidTestCompile "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
-    androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
-
-    // Espresso UI Testing
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso.idling:idling-concurrent:$rootProject.espressoVersion"
-    compile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
-
-    // Resolve conflicts between main and test APK:
-    androidTestCompile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:support-compat:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.google.code.findbugs:jsr305:$rootProject.findbugVersion"
-
-    compile "com.google.android.gms:play-services-ads:$rootProject.playServicesAdsVersion"
-
-    compile "com.github.medyo:fancybuttons:$rootProject.fancyButtonsVersion"
-
+    implementation "com.google.code.findbugs:jsr305:$rootProject.findbugVersion"
+    implementation ("com.google.android.gms:play-services-ads:$rootProject.playServicesAdsVersion"){
+        exclude group: 'com.android.support', module: 'customtabs'
+    }
+    implementation "com.github.medyo:fancybuttons:$rootProject.fancyButtonsVersion"
     implementation("com.mikepenz:aboutlibraries:$rootProject.aboutLibrariesVersion") {
         transitive = true
     }
-
-    compile("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
+    implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
         transitive = true
     }
-
-    compile("com.crashlytics.sdk.android:answers:$rootProject.answersVersion") {
+    implementation("com.crashlytics.sdk.android:answers:$rootProject.answersVersion") {
         transitive = true
     }
-
-    compile 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-js-rhino:1.5.0'
 
 }

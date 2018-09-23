@@ -1,23 +1,24 @@
 package com.quartzodev.cirosoundboard.data.source.local;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.quartzodev.cirosoundboard.data.Audio;
 import com.quartzodev.cirosoundboard.data.Section;
 import com.quartzodev.cirosoundboard.data.source.local.audio.AudioDao;
 import com.quartzodev.cirosoundboard.data.source.local.section.SectionDao;
 
+import androidx.annotation.NonNull;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
 /**
  * Created by victoraldir on 17/12/2017.
  */
 
-@Database(entities = {Audio.class, Section.class}, version = 3)
+@Database(entities = {Audio.class, Section.class}, version = 1)
 public abstract class CiroSoundBoardDatabase extends RoomDatabase {
 
     private static CiroSoundBoardDatabase INSTANCE;
@@ -34,8 +35,7 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         CiroSoundBoardDatabase.class, "CiroSoundBoard.db")
                         .addCallback(callback)
-                        .addMigrations(MIGRATION_1_2)
-                        .addMigrations(MIGRATION_2_3)
+                        .fallbackToDestructiveMigration()
                         .build();
             }
             return INSTANCE;
@@ -46,30 +46,16 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
      * Migrations
      */
 
-    private static final RoomDatabase.Callback callback = new RoomDatabase.Callback() {
+    static final RoomDatabase.Callback callback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase database) {
             super.onCreate(database);
-        }
-    };
-
-
-    private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-        @Override
-        public void migrate(SupportSQLiteDatabase database) {
-            cleanUpDatabase(database);
-        }
-    };
-
-    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
-        @Override
-        public void migrate(SupportSQLiteDatabase database) {
             cleanUpDatabase(database);
             initialScript(database);
         }
     };
 
-    private static void cleanUpDatabase(SupportSQLiteDatabase database){
+    static void cleanUpDatabase(SupportSQLiteDatabase database){
         database.execSQL("DELETE FROM section;");
         database.execSQL("delete from sqlite_sequence where name='section';");
 
@@ -77,7 +63,7 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
         database.execSQL("delete from sqlite_sequence where name='audio';");
     }
 
-    private static void initialScript(SupportSQLiteDatabase database){
+    static void initialScript(SupportSQLiteDatabase database){
 
         //Sections
         database.execSQL("INSERT INTO section ('id', 'label', 'order') VALUES (1,'Famosas',0)");

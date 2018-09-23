@@ -1,7 +1,5 @@
 package com.quartzodev.cirosoundboard.sound;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
 
 import com.quartzodev.cirosoundboard.data.Audio;
 import com.quartzodev.cirosoundboard.data.Section;
@@ -10,6 +8,9 @@ import com.quartzodev.cirosoundboard.data.source.GenericDataSource;
 import com.quartzodev.cirosoundboard.data.source.SectionRepository;
 
 import java.util.List;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 /**
  * Created by victoraldir on 17/12/2017.

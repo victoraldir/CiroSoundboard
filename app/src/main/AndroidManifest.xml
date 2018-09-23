@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.quartzodev.cirosoundboard">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        tools:replace="android:appComponentFactory"
+        android:appComponentFactory="android.support.v4.app.AppComponentFactory"
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="28">
+
         <activity
             android:name=".sound.SoundActivity"
             android:label="@string/app_name"
@@ -28,11 +33,11 @@
         </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="API_GOES_HERE"
+            android:value="535eaf4515793975a58e16aa0c097291ed581443"
             />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

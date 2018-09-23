@@ -1,9 +1,10 @@
 package com.quartzodev.cirosoundboard.utils;
 
-import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import androidx.annotation.NonNull;
 
 /**
  * Executor that runs a task on a new background thread.
