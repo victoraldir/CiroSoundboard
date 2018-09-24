@@ -18,6 +18,10 @@ import androidx.lifecycle.ViewModel;
 
 public class SoundViewModel extends ViewModel {
 
+    private static final int AD_TRIGGER_COUNT = 2;
+
+    private int mSwipeCounter;
+
     private LiveData<List<Audio>> mFavoriteList;
 
     private final AudioRepository mAudioRepository;
@@ -51,4 +55,15 @@ public class SoundViewModel extends ViewModel {
     public void loadSections(GenericDataSource.LoadListCallback<Section> callback) {
         mSectionRepository.getSections(callback);
     }
+
+    public boolean isShowInterstitialAd(){
+        if(mSwipeCounter == AD_TRIGGER_COUNT){
+            mSwipeCounter = 0;
+            return true;
+        }else{
+            mSwipeCounter++;
+        }
+        return false;
+    }
+
 }

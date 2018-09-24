@@ -36,8 +36,18 @@
 ]]>
 
     </string>
+
     <string name="app_id" translatable="false">ca-app-pub-6526073251385305~8315499177</string>
+
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-6526073251385305/1366947445</string>
+    <string name="ad_inter_main_activity">ca-app-pub-6526073251385305/9419209468</string>
+
+    <!-- TEST
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="ad_inter_main_activity">	ca-app-pub-3940256099942544/1033173712</string>
+    -->
+
+
     <string name="favorite_empty_message">Favorite list is empty</string>
     <string name="favorite_empty_sub_message">Swipe left to check audios</string>
     <string name="list_empty">List is empty</string>

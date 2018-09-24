@@ -11,8 +11,10 @@ import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -50,7 +52,8 @@ import mehdi.sakout.fancybuttons.FancyButton;
 public class SoundActivity extends AppCompatActivity implements SoundFragment.SoundFragmentListener,
         GenericDataSource.LoadListCallback<Section>,
         View.OnClickListener, android.view.ActionMode.Callback,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,
+        ViewPager.OnPageChangeListener{
 
     private AppMediaPlayer mAppMediaPlayer;
     private SoundSectionsPagerAdapter mSectionsPagerAdapter;
@@ -61,6 +64,8 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     private ActionMode mMode;
     private AppExecutors mAppExecutors;
     private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
+    private AdManager adManager;
 
     private boolean mMultiSelect = false;
     private Map<Audio, View> mSelectedItems = new HashMap<Audio, View>();
@@ -82,6 +87,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         setSupportActionBar(mToolbar);
 
         loadAdView();
+        loadmInterstitialAd();
         setupToolbar();
         setupFloatButton();
         setupViewPager();
@@ -95,6 +101,26 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
 
     }
 
+    private void loadAdRequest() {
+        if (!mInterstitialAd.isLoading()) {
+            AdRequest request = new AdRequest.Builder().build();
+            mInterstitialAd.loadAd(request);
+        }
+    }
+
+    private void showInterstitialAd() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            adManager.flagAdIsOpen = true;
+        }
+    }
+
+    public void loadmInterstitialAd(){
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.ad_inter_main_activity));
+        adManager = new AdManager();
+        mInterstitialAd.setAdListener(adManager);
+    }
 
     public void loadAdView(){
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -111,6 +137,12 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         fab.setOnClickListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadAdRequest();
+    }
+
     public void setupViewPager() {
 
         // Create the adapter that will return a fragment for each of the three
@@ -122,6 +154,8 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(mViewPager);
+
+        mViewPager.addOnPageChangeListener(this);
 
     }
 
@@ -408,5 +442,43 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         }
 
         return false;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if(mSoundViewModel.isShowInterstitialAd()){
+            showInterstitialAd();
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    public class AdManager extends AdListener {
+
+        public boolean flagAdIsOpen;
+
+        public AdManager() {
+            flagAdIsOpen = false;
+        }
+
+        @Override
+        public void onAdOpened() {
+            super.onAdOpened();
+        }
+
+        @Override
+        public void onAdClosed() {
+            super.onAdClosed();
+            flagAdIsOpen = false;
+            loadAdRequest();
+        }
     }
 }
