@@ -33,9 +33,8 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
         synchronized (sLock) {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                        CiroSoundBoardDatabase.class, "CiroSoundBoard.db")
+                        CiroSoundBoardDatabase.class, "CiroSoundBoard2.db")
                         .addCallback(callback)
-                        .fallbackToDestructiveMigration()
                         .build();
             }
             return INSTANCE;
@@ -45,14 +44,18 @@ public abstract class CiroSoundBoardDatabase extends RoomDatabase {
     /**
      * Migrations
      */
-
     static final RoomDatabase.Callback callback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase database) {
             super.onCreate(database);
-            cleanUpDatabase(database);
             initialScript(database);
         }
+
+        @Override
+        public void onOpen(SupportSQLiteDatabase database) {
+            super.onOpen(database);
+        }
+
     };
 
     static void cleanUpDatabase(SupportSQLiteDatabase database){
