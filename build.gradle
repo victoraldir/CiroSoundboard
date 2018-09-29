@@ -52,10 +52,10 @@ ext{
     archLifecycleVersion = "2.0.0"
 
     fancyButtonsVersion = "1.9.0"
-    aboutLibrariesVersion = "6.2.0-rc02"
+    aboutLibrariesVersion = "6.2.0"
     playServicesAdsVersion = "15.0.1"
-    crashlyticsVersion = "2.8.0@aar"
-    answersVersion = "1.4.1@aar"
+    crashlyticsVersion = "2.9.5@aar"
+    answersVersion = "1.4.3@aar"
 }
 
 task clean(type: Delete) {

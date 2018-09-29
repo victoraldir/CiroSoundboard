@@ -64,13 +64,15 @@ dependencies {
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
 
     implementation "com.google.code.findbugs:jsr305:$rootProject.findbugVersion"
-    implementation ("com.google.android.gms:play-services-ads:$rootProject.playServicesAdsVersion"){
-        exclude group: 'com.android.support', module: 'customtabs'
-    }
+    implementation ("com.google.android.gms:play-services-ads:$rootProject.playServicesAdsVersion")
     implementation "com.github.medyo:fancybuttons:$rootProject.fancyButtonsVersion"
-    implementation("com.mikepenz:aboutlibraries:$rootProject.aboutLibrariesVersion") {
-        transitive = true
-    }
+    implementation("com.mikepenz:aboutlibraries:$rootProject.aboutLibrariesVersion")
+
+    //required support lib modules
+    implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
+    implementation "androidx.cardview:cardview:$rootProject.supportLibraryVersion"
+    implementation "androidx.recyclerview:recyclerview:$rootProject.supportLibraryVersion"
+
     implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
         transitive = true
     }
