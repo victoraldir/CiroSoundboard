@@ -173,6 +173,7 @@ public class SoundFragment extends Fragment implements Observer<List<Audio>> {
     public interface SoundFragmentListener{
         void onClick(Audio audio, FancyButton button, View container);
         void onLongClick(Audio audio, FancyButton button, View container);
-        void onFavoriteClick(Audio audio, boolean flag);
+        void onFavoriteClick(Audio audio, boolean flag, View container);
+        void onShareClick(Audio audio, View container);
     }
 }

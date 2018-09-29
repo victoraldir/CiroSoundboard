@@ -231,23 +231,39 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
     }
 
     @Override
-    public void onFavoriteClick(Audio audio, boolean flag) {
+    public void onFavoriteClick(final Audio audio, final boolean flag, View container) {
 
-        if(flag)
-            AnswersUtil.onFavoriteAudioMetric(audio);
+        if(!mMultiSelect) {
 
-        audio.setFavorite(flag);
-        mSoundViewModel.updateAudio(audio);
+            if (flag)
+                AnswersUtil.onFavoriteAudioMetric(audio);
 
-        String msg;
+            audio.setFavorite(flag);
+            mSoundViewModel.updateAudio(audio);
 
-        if(flag){
-            msg = String.format(getString(R.string.favorite_audio),audio.getLabel());
+            String msg;
+
+            if (flag) {
+                msg = String.format(getString(R.string.favorite_audio), audio.getLabel());
+            } else {
+                msg = String.format(getString(R.string.not_favorite_audio), audio.getLabel());
+            }
+
+            Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_LONG).show();
         }else{
-            msg = String.format(getString(R.string.not_favorite_audio),audio.getLabel());
+            selectItem(audio, container);
         }
 
-        Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onShareClick(Audio audio, View container) {
+        if (!mMultiSelect) {
+            mMode = mToolbar.startActionMode(this);
+            selectItem(audio, container);
+        }else {
+            selectItem(audio, container);
+        }
     }
 
     @Override

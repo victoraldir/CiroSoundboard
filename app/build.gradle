@@ -49,6 +49,8 @@ android {
 
 dependencies {
 
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
     // App's dependencies, including test
     implementation "com.google.android.material:material:$rootProject.supportLibraryVersion"
 
