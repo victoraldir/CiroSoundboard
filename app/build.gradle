@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.quartzodev.cirosoundboard"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 10
         versionName "1.0.3"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -36,14 +36,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion '28.0.2'
 
     packagingOptions {
-        exclude 'META-INF/androidx.*'
-        exclude 'META-INF/proguard/*'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/library-core_release.kotlin_module'
     }
 }
 
@@ -52,8 +58,6 @@ dependencies {
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
 
     // App's dependencies, including test
-    implementation "com.google.android.material:material:$rootProject.supportLibraryVersion"
-
     implementation "com.google.guava:guava:$rootProject.guavaVersion"
 
     // Architecture Components
@@ -70,8 +74,6 @@ dependencies {
 
     //required support lib modules
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
-    implementation "androidx.cardview:cardview:$rootProject.supportLibraryVersion"
-    implementation "androidx.recyclerview:recyclerview:$rootProject.supportLibraryVersion"
 
     implementation("com.crashlytics.sdk.android:crashlytics:$rootProject.crashlyticsVersion") {
         transitive = true
@@ -79,7 +81,4 @@ dependencies {
     implementation("com.crashlytics.sdk.android:answers:$rootProject.answersVersion") {
         transitive = true
     }
-//    implementation 'com.facebook.stetho:stetho:1.5.0'
-//    implementation 'com.facebook.stetho:stetho-js-rhino:1.5.0'
-
 }

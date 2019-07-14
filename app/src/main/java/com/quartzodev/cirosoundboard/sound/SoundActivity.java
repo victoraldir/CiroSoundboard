@@ -120,6 +120,7 @@ public class SoundActivity extends AppCompatActivity implements SoundFragment.So
         mInterstitialAd.setAdUnitId(getString(R.string.ad_inter_main_activity));
         adManager = new AdManager();
         mInterstitialAd.setAdListener(adManager);
+
     }
 
     public void loadAdView(){

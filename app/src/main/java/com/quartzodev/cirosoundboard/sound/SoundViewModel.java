@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModel;
 
 public class SoundViewModel extends ViewModel {
 
-    private static final int AD_TRIGGER_COUNT = 2;
+    private static final int AD_TRIGGER_COUNT = 5;
 
     private int mSwipeCounter;
 

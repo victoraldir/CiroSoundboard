@@ -7,7 +7,7 @@
 
     <application
         tools:replace="android:appComponentFactory"
-        android:appComponentFactory="android.support.v4.app.AppComponentFactory"
+        android:appComponentFactory="android.app.AppComponentFactory"
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -49,8 +49,11 @@
             <meta-data
                 android:name="com.google.android.gms.ads.APPLICATION_ID"
                 android:value="@string/app_id"/>
-
         </provider>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true"/>
 
     </application>
 
