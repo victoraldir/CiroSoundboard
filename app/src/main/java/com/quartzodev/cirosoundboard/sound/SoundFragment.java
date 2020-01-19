@@ -8,6 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.quartzodev.cirosoundboard.R;
 import com.quartzodev.cirosoundboard.data.Audio;
 
@@ -16,10 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 /**

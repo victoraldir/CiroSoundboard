@@ -2,17 +2,16 @@ package com.quartzodev.cirosoundboard.data.source.local;
 
 import android.content.Context;
 
-import com.quartzodev.cirosoundboard.data.Audio;
-import com.quartzodev.cirosoundboard.data.Section;
-import com.quartzodev.cirosoundboard.data.source.local.audio.AudioDao;
-import com.quartzodev.cirosoundboard.data.source.local.section.SectionDao;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.quartzodev.cirosoundboard.data.Audio;
+import com.quartzodev.cirosoundboard.data.Section;
+import com.quartzodev.cirosoundboard.data.source.local.audio.AudioDao;
+import com.quartzodev.cirosoundboard.data.source.local.section.SectionDao;
 
 /**
  * Created by victoraldir on 17/12/2017.

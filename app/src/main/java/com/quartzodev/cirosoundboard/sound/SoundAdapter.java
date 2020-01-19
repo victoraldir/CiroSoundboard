@@ -7,15 +7,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.like.LikeButton;
-import com.like.OnAnimationEndListener;
-import com.like.OnLikeListener;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.quartzodev.cirosoundboard.R;
 import com.quartzodev.cirosoundboard.data.Audio;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 /**
@@ -59,68 +58,25 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
         final FancyButton button = holder.mBtnAudio;
 
         if (audio.isFavorite()) {
-            holder.mImageView.setLiked(true);
-            holder.mImageView.setTag(true);
-        } else {
-            holder.mImageView.setLiked(false);
-            holder.mImageView.setTag(false);
+            holder.mFavButton.setFavorite(true);
+            holder.mFavButton.setTag(true);
         }
 
-        holder.mImageView.setOnAnimationEndListener(new OnAnimationEndListener() {
-            @Override
-            public void onAnimationEnd(LikeButton likeButton) {
-                mListener.onFavoriteClick(audio, true, holder.mContainer);
-            }
+
+        holder.mFavButton.setOnClickListener(v -> mListener.onFavoriteClick(audio,!((MaterialFavoriteButton) v).isFavorite(),holder.mContainer));
+
+        container.setOnClickListener(view -> mListener.onClick(audio, button, container));
+
+        button.setOnClickListener(view -> mListener.onClick(audio, button, container));
+
+        container.setOnLongClickListener(view -> {
+            mListener.onLongClick(audio, button, container);
+            return true;
         });
 
-        holder.mShareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onShareClick(audio,holder.mContainer);
-            }
-        });
-
-        holder.mImageView.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-            }
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
-                mListener.onFavoriteClick(audio, false, holder.mContainer);
-            }
-        });
-
-        container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mListener.onClick(audio, button, container);
-            }
-        });
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mListener.onClick(audio, button, container);
-            }
-        });
-
-        container.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                mListener.onLongClick(audio, button, container);
-                return true;
-            }
-        });
-
-        holder.mBtnAudio.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                mListener.onLongClick(audio, button, container);
-                return true;
-            }
+        holder.mBtnAudio.setOnLongClickListener(view -> {
+            mListener.onLongClick(audio, button, container);
+            return true;
         });
 
     }
@@ -135,17 +91,15 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
         TextView mLabelAudio;
         FancyButton mBtnAudio;
         LinearLayout mContainer;
-        LikeButton mImageView;
-        ImageView mImageNew;
+        MaterialFavoriteButton mFavButton;
         ImageView mShareBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
-//            mImageNew = itemView.findViewById(R.id.icon_new);
             mContainer = itemView.findViewById(R.id.container_btn);
             mBtnAudio = itemView.findViewById(R.id.btn_audio);
             mLabelAudio = itemView.findViewById(R.id.label_audio);
-            mImageView = itemView.findViewById(R.id.fav_icon);
+            mFavButton = itemView.findViewById(R.id.fav_icon);
             mShareBtn = itemView.findViewById(R.id.share_btn);
         }
     }

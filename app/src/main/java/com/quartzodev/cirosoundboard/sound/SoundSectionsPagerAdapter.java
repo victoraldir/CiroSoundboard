@@ -1,12 +1,12 @@
 package com.quartzodev.cirosoundboard.sound;
 
-import com.quartzodev.cirosoundboard.data.Section;
-
-import java.util.List;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.quartzodev.cirosoundboard.data.Section;
+
+import java.util.List;
 
 /**
  * Created by victoraldir on 17/12/2017.
@@ -21,7 +21,7 @@ public class SoundSectionsPagerAdapter extends FragmentStatePagerAdapter {
     public SoundSectionsPagerAdapter(FragmentManager fm,
                                      List<Section> sectionList,
                                      String favoriteLabel) {
-        super(fm);
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mSectionList = sectionList;
         mFavoriteLabel = favoriteLabel;
         addFavorite();

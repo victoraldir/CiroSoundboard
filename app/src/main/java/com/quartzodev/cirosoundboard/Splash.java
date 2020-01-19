@@ -2,9 +2,10 @@ package com.quartzodev.cirosoundboard;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.quartzodev.cirosoundboard.sound.SoundActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.quartzodev.cirosoundboard.sound.SoundActivity;
 
 public class Splash extends AppCompatActivity {
 

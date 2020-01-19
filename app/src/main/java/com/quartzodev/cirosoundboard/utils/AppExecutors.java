@@ -3,11 +3,11 @@ package com.quartzodev.cirosoundboard.utils;
 import android.os.Handler;
 import android.os.Looper;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Global executor pools for the whole application.

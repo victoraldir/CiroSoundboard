@@ -1,6 +1,8 @@
 package com.quartzodev.cirosoundboard.data.source;
 
 
+import androidx.annotation.NonNull;
+
 import com.quartzodev.cirosoundboard.data.Section;
 import com.quartzodev.cirosoundboard.data.source.local.section.SectionDataSource;
 
@@ -8,8 +10,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
